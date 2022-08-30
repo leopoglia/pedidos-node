@@ -1,0 +1,25 @@
+{
+  "name": "atividade_avaliativa_biblioteca_leonardo_poglia",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leopoglia/atividade_avaliativa_biblioteca_leonardo_poglia.git"
+  },
+  "author": "Leonardo Heitor Poglia",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leopoglia/atividade_avaliativa_biblioteca_leonardo_poglia/issues"
+  },
+  "homepage": "https://github.com/leopoglia/atividade_avaliativa_biblioteca_leonardo_poglia#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "firebase": "^9.8.4",
+    "nodemon": "^2.0.19"
+  }
+}
