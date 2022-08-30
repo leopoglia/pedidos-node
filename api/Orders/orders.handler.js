@@ -38,9 +38,10 @@ async function saveOrders(req) {
 
 async function editOrders(req, id) {
     if(getIdOrders(id)){
-        return getIdOrders(id)
+        let Order = getIdOrders(id);
+    }else{
+        return { error: "001", message: "Ordem não existe" }
     }
-
 
     // if (req.body.nome && req.body.descricao && req.body.paginas) {
     //     return await crud.salvar("livros", id, req.body);
