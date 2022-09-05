@@ -65,7 +65,7 @@ async function editOrders(req, id) {
             Order.Status = 'close';
             return await crud.salvar("Orders", id, Order);
         } else {
-            return { error: "002", message: "A Order já está feichada" }
+            return { error: "002", message: "A Order já está fechada" }
         }
 
     } else {

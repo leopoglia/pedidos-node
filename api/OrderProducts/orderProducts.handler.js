@@ -50,7 +50,7 @@ async function saveOrderProducts(req) {
         const Orders = await crud.buscarPorID("Orders", req.body.OrderId);
 
         if (Orders.Status != "open") {
-            return { error: "003", message: "A Order não pode estar feichada" }
+            return { error: "003", message: "A Order não pode estar fechada" }
         }
 
         if (orderArray != -1) {
@@ -95,7 +95,7 @@ async function deleteOrderProducts(req) {
         const Orders = await crud.buscarPorID("Orders", req.body.OrderId);
 
         if (Orders.Status != "open") {
-            return { error: "003", message: "A Order não pode estar feichada" }
+            return { error: "003", message: "A Order não pode estar fechada" }
         }
 
         if (orderArray != -1) {
