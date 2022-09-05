@@ -22,8 +22,8 @@ router.put("/:id", (req, res) => {
     orderProductsHandler.editOrderProducts(req, req.params.id, res).then(dados => res.json(dados));
 })
 
-router.delete("/:id", (req, res) => {
-    orderProductsHandler.deleteOrderProducts(req.params.id, res).then(dados => res.json(dados));
+router.delete("/", (req, res) => {
+    orderProductsHandler.deleteOrderProducts(req).then(dados => res.json(dados));
 })
 
 module.exports = router;

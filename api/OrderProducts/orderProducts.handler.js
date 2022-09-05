@@ -29,7 +29,6 @@ function searchProductSimilar(req, OrdersProducts) {
     });
 
     return productSimilar;
-
 }
 
 
@@ -55,14 +54,15 @@ async function saveOrderProducts(req) {
         }
 
         if (orderArray != -1) {
-            const productSimilar = searchProductSimilar(req, OrdersProducts);
+            let Order = OrdersProducts[orderArray];
+            for (Order of OrdersProducts) {
 
-            if (productSimilar) {
-                req.body.Quantity += productSimilar.Quantity;
-                return await crud.salvar("OrderProducts", productSimilar.id, req.body);
-            } else {
-                return await crud.salvar("OrderProducts", 0, req.body);
+                if (Order.OrderId == req.body.OrderId && Order.ProductId == req.body.ProductId) {
+                    req.body.Quantity += Order.Quantity;
+                    return await crud.salvar("OrderProducts", Order.id, req.body);
+                }
             }
+            return await crud.salvar("OrderProducts", 0, req.body);
         }
 
     } else {
@@ -78,8 +78,45 @@ async function editOrderProducts(req, id) {
     }
 }
 
-async function deleteOrderProducts(id) {
-    return await crud.remover("OrderProducts", id);
+async function deleteOrderProducts(req) {
+    if (req.body.ProductId && req.body.Quantity && req.body.OrderId) {
+        const OrdersProducts = await getOrderProducts();
+        const orderArray = await searchOrder(req);
+        const productArray = await searchProduct(req);
+
+        if (productArray == -1) {
+            return { error: "002", message: "O Product não existe" }
+        }
+
+        if (orderArray == -1) {
+            return { error: "002", message: "A Order não existe" }
+        }
+
+        const Orders = await crud.buscarPorID("Orders", req.body.OrderId);
+
+        if (Orders.Status != "open") {
+            return { error: "003", message: "A Order não pode estar feichada" }
+        }
+
+        if (orderArray != -1) {
+            let Order = OrdersProducts[orderArray];
+            for (Order of OrdersProducts) {
+                if (Order.OrderId == req.body.OrderId && Order.ProductId == req.body.ProductId) {
+                    req.body.Quantity =  Order.Quantity - req.body.Quantity;
+
+                    if (req.body.Quantity > 0) {
+                        return await crud.salvar("OrderProducts", Order.id, req.body);
+                    } else {
+                        return await crud.remover("OrderProducts", Order.id);
+                    }
+
+                }
+            }
+        }
+        return await crud.salvar("OrderProducts", 0, req.body);
+    } else {
+        return { error: "001", message: "É necessário preencher os parâmetros da requisição", camposNecessarios: ["ProductId, Quantity, OrderId"] }
+    }
 }
 
 module.exports = {
@@ -87,5 +124,5 @@ module.exports = {
     getIdOrderProducts,
     saveOrderProducts,
     editOrderProducts,
-    editOrderProducts
+    deleteOrderProducts
 }

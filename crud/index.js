@@ -30,7 +30,6 @@ const db = getFirestore();
 async function salvar(nomeTabela, id, dado) {
 
     if (id) {
-        console.log("a")
         const referencesEntity = await setDoc(doc(db, nomeTabela, id), dado);;
         const savedData = {
             ...dado,
@@ -38,7 +37,6 @@ async function salvar(nomeTabela, id, dado) {
         }
         return savedData;
     } else {
-        console.log("b")
         const referencesEntity = await addDoc(collection(db, nomeTabela), dado);
         const savedData = {
             ...dado,

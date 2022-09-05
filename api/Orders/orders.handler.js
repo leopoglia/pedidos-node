@@ -12,6 +12,7 @@ async function saveOrders(req) {
     const Users = await crud.buscar("Users");
     const id = req.body.UserId;
     const User = Users.findIndex(u => u.id == id);
+    let number = 0, maior = 0;
 
     if (User == -1) {
         return { error: "002", message: "User não existe" }
@@ -21,33 +22,58 @@ async function saveOrders(req) {
     const OrderUserId = Orders.findIndex(o => o.UserId == req.body.UserId);
 
     if (OrderUserId != -1) {
-        return { error: "003", message: "User já tem uma Order" }
+
+        for (let i = 0; i < Orders.length; i++) {
+            if (Orders[i].UserId == req.body.UserId) {
+                if (Orders[i].Number > maior) {
+                    maior = Orders[i].Number;
+                    number = maior + 1;
+                }
+
+                if (Orders[i].Status == "open") {
+                    return { error: "003", message: "User já possui uma Order aberta" }
+                }
+            }
+        }
+    }
+
+    if (number == 0) {
+        number = 1;
     }
 
     const Order = {
         "Status": "open",
+        "Number": number,
         ...req.body
     }
 
-    if (req.body.Number && req.body.UserId) {
+    if (req.body.UserId) {
         return await crud.salvar("Orders", 0, Order);
     } else {
-        return { error: "001", message: "É necessário preencher os parâmetros da requisição", camposNecessarios: ["Number, UserId"] }
+        return { error: "001", message: "É necessário preencher os parâmetros da requisição", camposNecessarios: ["UserId"] }
     }
 }
 
 async function editOrders(req, id) {
-    if(getIdOrders(id)){
-        let Order = getIdOrders(id);
-    }else{
+    const Orders = await crud.buscar("Orders");
+    const orderArray = Orders.findIndex(u => u.id == id);
+
+
+    if (orderArray != -1) {
+        let Order = await getIdOrders(id);
+        if (Order.Status == "open") {
+            Order.Status = 'close';
+            return await crud.salvar("Orders", id, Order);
+        } else {
+            return { error: "002", message: "A Order já está feichada" }
+        }
+
+    } else {
         return { error: "001", message: "Ordem não existe" }
     }
 
-    // if (req.body.nome && req.body.descricao && req.body.paginas) {
-    //     return await crud.salvar("livros", id, req.body);
-    // } else {
-    //     return "Precisa ter os campos nome, descrição, paginas e status."
-    // }
+
+
 }
 
 async function deleteOrders(id) {
