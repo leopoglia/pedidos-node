@@ -20,18 +20,6 @@ async function searchProduct(req) {
     return Products.findIndex(p => p.id == productId);
 }
 
-function searchProductSimilar(req, OrdersProducts) {
-    let productSimilar = null;
-    OrdersProducts.forEach(element => {
-        if (element.ProductId == req.body.ProductId) {
-            productSimilar = element;
-        }
-    });
-
-    return productSimilar;
-}
-
-
 async function saveOrderProducts(req) {
 
     if (req.body.ProductId && req.body.Quantity && req.body.OrderId) {
