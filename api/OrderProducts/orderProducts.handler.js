@@ -78,7 +78,7 @@ async function editOrderProducts(req, id) {
     }
 }
 
-async function deleteOrderProducts(req) {
+async function decreaseOrderProducts(req) {
     if (req.body.ProductId && req.body.Quantity && req.body.OrderId) {
         const OrdersProducts = await getOrderProducts();
         const orderArray = await searchOrder(req);
@@ -123,6 +123,5 @@ module.exports = {
     getOrderProducts,
     getIdOrderProducts,
     saveOrderProducts,
-    editOrderProducts,
-    deleteOrderProducts
+    decreaseOrderProducts
 }

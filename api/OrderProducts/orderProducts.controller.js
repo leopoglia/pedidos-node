@@ -18,12 +18,12 @@ router.post("/", (req, res) => {
     orderProductsHandler.saveOrderProducts(req, res).then(dados => res.json(dados))
 })
 
-router.put("/:id", (req, res) => {
-    orderProductsHandler.editOrderProducts(req, req.params.id, res).then(dados => res.json(dados));
+router.put("/", (req, res) => {
+    orderProductsHandler.decreaseOrderProducts(req).then(dados => res.json(dados));
 })
 
-router.delete("/", (req, res) => {
-    orderProductsHandler.deleteOrderProducts(req).then(dados => res.json(dados));
-})
+// router.delete("/", (req, res) => {
+    // orderProductsHandler.deleteOrderProducts(req).then(dados => res.json(dados));
+// })
 
 module.exports = router;
