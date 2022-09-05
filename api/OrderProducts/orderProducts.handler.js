@@ -62,7 +62,7 @@ async function saveOrderProducts(req) {
                     return await crud.salvar("OrderProducts", Order.id, req.body);
                 }
             }
-            return await crud.salvar("OrderProducts", 0, req.body);
+            return { error: "001", message: "É necessário preencher os parâmetros da requisição", camposNecessarios: ["ProductId, Quantity, OrderId"] };
         }
 
     } else {
@@ -102,7 +102,7 @@ async function deleteOrderProducts(req) {
             let Order = OrdersProducts[orderArray];
             for (Order of OrdersProducts) {
                 if (Order.OrderId == req.body.OrderId && Order.ProductId == req.body.ProductId) {
-                    req.body.Quantity =  Order.Quantity - req.body.Quantity;
+                    req.body.Quantity = Order.Quantity - req.body.Quantity;
 
                     if (req.body.Quantity > 0) {
                         return await crud.salvar("OrderProducts", Order.id, req.body);
@@ -113,7 +113,7 @@ async function deleteOrderProducts(req) {
                 }
             }
         }
-        return await crud.salvar("OrderProducts", 0, req.body);
+        return { error: "004", message: "A ordem não possui esse produto" };
     } else {
         return { error: "001", message: "É necessário preencher os parâmetros da requisição", camposNecessarios: ["ProductId, Quantity, OrderId"] }
     }
