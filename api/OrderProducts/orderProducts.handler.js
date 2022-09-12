@@ -50,7 +50,7 @@ async function saveOrderProducts(req) {
                     return await crud.salvar("OrderProducts", Order.id, req.body);
                 }
             }
-            return { error: "001", message: "É necessário preencher os parâmetros da requisição", camposNecessarios: ["ProductId, Quantity, OrderId"] };
+            return await crud.salvar("OrderProducts", 0, req.body);
         }
 
     } else {
